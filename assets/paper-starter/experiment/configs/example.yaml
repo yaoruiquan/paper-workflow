@@ -1,7 +1,7 @@
-experiment_id: exp-001
-seed: 42
-dataset: TBD
-method: TBD
-metrics:
-  - accuracy
-  - f1
+实验编号: exp-001
+随机种子: 42
+数据集: 待填写
+方法: 待填写
+评价指标:
+  - 准确率
+  - F1

@@ -1,27 +1,27 @@
-# Paper Workflow
+# 论文工作流
 
-Use a Stage + Gate + Rollback model. The goal is to prevent paper writing from drifting away from evidence.
+采用“阶段 + 关卡 + 回退”模型。目标是让论文写作始终围绕证据推进，避免写作内容脱离实验和材料。
 
-## Stage Overview
+## 阶段概览
 
-| Stage | Name | Main Output | Gate Purpose |
+| 阶段 | 名称 | 主要产物 | 关卡目标 |
 |---|---|---|---|
-| 1 | Topic | Topic proposal, gap analysis, literature survey | Avoid weak or infeasible topics |
-| 2 | Experiment design | Experiment design, protocol, baseline plan | Ensure experiments can answer the research question |
-| 3 | Experiment run | Raw/processed results, figures, anomaly notes | Ensure results are complete and reasonable |
-| 4 | Outline | Page budget, storyline, section-experiment map | Ensure writing has evidence before drafting |
-| 5 | Writing | Versioned drafts and content-freeze note | Ensure drafts converge instead of drifting |
-| 6 | Review | Format, logic, and language review reports | Ensure submission readiness |
+| 1 | 选题 | 选题方案、研究空白分析、文献调研 | 避免题目薄弱或不可执行 |
+| 2 | 实验设计 | 实验方案、评估协议、基线计划 | 确认实验能回答研究问题 |
+| 3 | 实验运行 | 原始结果、处理后结果、图表、异常记录 | 确认结果完整且合理 |
+| 4 | 大纲 | 页数预算、故事线、章节-实验证据映射 | 确认有证据后再写草稿 |
+| 5 | 写作 | 版本化草稿、内容冻结记录 | 确认草稿持续收敛 |
+| 6 | 审查 | 格式、逻辑、语言审查报告 | 确认达到投稿准备状态 |
 
-## Operating Rules
+## 执行规则
 
-- Write every non-trivial result into a file under the current stage.
-- Never move forward on chat-only conclusions.
-- Before entering a new stage, check the previous stage gate.
-- If later work reveals missing evidence, use rollback instead of patching prose around the gap.
-- Keep experiments reproducible with config, seed, commit, metric, and run logs.
+- 所有非平凡结论都必须写入当前阶段文件。
+- 不能只凭聊天结论进入下一阶段。
+- 进入新阶段前，必须检查上一阶段关卡。
+- 后续阶段发现证据缺口时，先回退，不要靠文字包装掩盖问题。
+- 实验必须记录配置、随机种子、代码提交、评价指标和运行日志，保证可复现。
 
-## Recommended Project Structure
+## 推荐项目结构
 
 ```text
 project/
@@ -48,10 +48,10 @@ project/
     └── 6-review/
 ```
 
-## Stage Handoff
+## 阶段交接
 
-Every stage should end with:
+每个阶段结束时都应留下：
 
-- `gate-check.md`: checklist generated or updated before decision.
-- `GATE.md`: final decision: `PASS`, `CONDITIONAL_PASS`, or `BLOCK`.
-- A clear next action if the gate is not `PASS`.
+- `gate-check.md`：进入决策前生成或更新的检查清单。
+- `GATE.md`：最终关卡结论，取值为 `PASS`、`CONDITIONAL_PASS` 或 `BLOCK`。
+- 如果结论不是 `PASS`，必须写清楚下一步动作。

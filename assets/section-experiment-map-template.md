@@ -1,6 +1,6 @@
-# Section Experiment Map
+# 章节-实验证据映射
 
-| Section | Claim | Experiment / Figure / Table / Citation | Support Status | Gap |
+| 章节 | 主张 | 实验 / 图 / 表 / 引用 | 支撑状态 | 缺口 |
 |---|---|---|---|---|
-| 4.1 Main Results | Method improves over baseline | Table 1 | Supported | |
-| 4.2 Ablation | Component A contributes | Table 2 | Partial | Missing one seed |
+| 4.1 主结果 | 方法相对基线有改进 | 表 1 | 已支撑 | |
+| 4.2 消融实验 | 组件 A 有贡献 | 表 2 | 部分支撑 | 缺少一个随机种子 |

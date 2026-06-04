@@ -1,20 +1,20 @@
-# Review Report
+# 审查报告
 
-**Review Pass**: Format | Logic | Language
-**Target File**:
-**Date**:
-**Status**: PASS | BLOCK
+**审查轮次**: 格式 | 逻辑 | 语言
+**目标文件**:
+**日期**:
+**状态**: PASS | BLOCK
 
-## Findings
+## 问题清单
 
-| ID | Severity | Location | Finding | Required Action |
+| 编号 | 严重性 | 位置 | 问题 | 必需动作 |
 |---|---|---|---|---|
-| R-001 | High | Section/Figure/Table | ... | ... |
+| R-001 | 高 | 章节/图/表 | ... | ... |
 
-## Evidence
+## 证据
 
 - ...
 
-## Decision
+## 结论
 
-State whether the paper can move to the next review pass.
+说明论文是否可以进入下一轮审查。

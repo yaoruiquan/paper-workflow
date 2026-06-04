@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check required artifacts for a paper workflow stage."""
+"""检查论文工作流阶段必需产物。"""
 
 from __future__ import annotations
 
@@ -15,6 +15,15 @@ STAGE_SLUGS = {
     4: "outline",
     5: "writing",
     6: "review",
+}
+
+STAGE_LABELS = {
+    1: "选题",
+    2: "实验设计",
+    3: "实验运行",
+    4: "大纲",
+    5: "写作",
+    6: "审查",
 }
 
 REQUIRED = {
@@ -75,30 +84,30 @@ def check_stage(root: Path, stage: int) -> tuple[str, list[tuple[str, bool]]]:
 
 def report_text(stage: int, status: str, rows: list[tuple[str, bool]]) -> str:
     lines = [
-        f"# Gate Check: Stage {stage} - {STAGE_SLUGS[stage]}",
+        f"# 关卡检查：阶段 {stage} - {STAGE_LABELS[stage]}",
         "",
-        f"**Status**: {status}",
-        f"**Checked At**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f"**状态**: {status}",
+        f"**检查时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         "",
-        "## Required Items",
+        "## 必需项",
         "",
     ]
     for item, ok in rows:
         mark = "x" if ok else " "
         lines.append(f"- [{mark}] {item}")
-    lines.extend(["", "## Blocking Items", ""])
+    lines.extend(["", "## 阻塞项", ""])
     missing = [item for item, ok in rows if not ok]
     if missing:
         lines.extend(f"- {item}" for item in missing)
     else:
-        lines.append("- None")
-    lines.extend(["", "## Next Action", ""])
-    lines.append("Write `GATE.md` with the final PASS/CONDITIONAL_PASS/BLOCK decision.")
+        lines.append("- 无")
+    lines.extend(["", "## 下一步动作", ""])
+    lines.append("写入 `GATE.md`，记录最终 `PASS` / `CONDITIONAL_PASS` / `BLOCK` 判定。")
     return "\n".join(lines) + "\n"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check a stage gate")
+    parser = argparse.ArgumentParser(description="检查阶段关卡")
     parser.add_argument("project_dir")
     parser.add_argument("--stage", type=int, required=True, choices=sorted(STAGE_SLUGS))
     parser.add_argument("--no-write", action="store_true")
@@ -110,7 +119,7 @@ def main() -> int:
         out = root / "stage" / f"{args.stage}-{STAGE_SLUGS[args.stage]}" / "gate-check.md"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(text, encoding="utf-8")
-        print(f"wrote: {out}")
+        print(f"已写入: {out}")
     print(text)
     return 0 if status == "PASS" else 2
 

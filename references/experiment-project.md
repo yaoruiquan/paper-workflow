@@ -1,8 +1,8 @@
-# Experiment Project Rules
+# 实验项目规范
 
-Use a maintainable local project. Every experiment must be traceable.
+使用可维护的本地项目结构。每一次实验都必须可追溯。
 
-## Required Directories
+## 必需目录
 
 ```text
 experiment/
@@ -17,36 +17,36 @@ experiment/
 └── logs/
 ```
 
-## Required Run Metadata
+## 必需运行元数据
 
-For each experiment run, record:
+每次实验运行都必须记录：
 
-- Experiment ID
-- Date/time
-- Git commit or code snapshot note
-- Dataset version
-- Config file path
-- Random seed
-- Hardware/runtime notes
-- Raw output path
-- Processed result path
-- Figure/table path if generated
-- Known anomalies
+- 实验编号
+- 日期和时间
+- Git 提交号或代码快照说明
+- 数据集版本
+- 配置文件路径
+- 随机种子
+- 硬件和运行环境说明
+- 原始输出路径
+- 处理后结果路径
+- 如生成图表，记录图表路径
+- 已知异常
 
-## Data Checks
+## 数据检查
 
-After each result batch:
+每批结果产生后：
 
-- Run `scripts/check_stat.py` on result files.
-- Run `scripts/check_seed_stability.py` when multiple seeds exist.
-- Compare baseline reproduction to reported values when available.
-- Record anomalies in `stage/3-experiment-run/artifacts/anomaly-report.md`.
+- 对结果文件运行 `scripts/check_stat.py`。
+- 存在多随机种子结果时运行 `scripts/check_seed_stability.py`。
+- 如果有公开报告值，比较基线复现结果和报告值。
+- 将异常记录到 `stage/3-experiment-run/artifacts/anomaly-report.md`。
 
-## Figure Checks
+## 图表检查
 
-Figures should be publication-ready before Stage 4:
+进入阶段 4 前，图表应达到可投稿状态：
 
-- Use readable fonts and consistent sizes.
-- Export vector formats when possible (`.pdf`, `.svg`) and high-resolution raster otherwise.
-- Keep axis labels, legends, and captions consistent with the paper terminology.
-- Do not use screenshots for quantitative figures.
+- 字体清晰，字号一致。
+- 优先导出矢量格式（`.pdf`、`.svg`），否则使用高分辨率位图。
+- 坐标轴标签、图例和标题与论文术语保持一致。
+- 定量图表不要使用截图。

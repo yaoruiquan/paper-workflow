@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check result files for missing values, NaN/inf, and outliers."""
+"""检查结果文件中的缺失值、NaN/无穷值和离群值。"""
 
 from __future__ import annotations
 
@@ -93,7 +93,7 @@ def iter_files(root: Path) -> list[Path]:
 
 
 def markdown(results: list[dict[str, Any]]) -> str:
-    lines = ["# Experiment Data Check", "", "| File | Rows | Missing | NaN/Inf | Outliers |", "|---|---:|---:|---:|---|"]
+    lines = ["# 实验数据检查", "", "| 文件 | 行数 | 缺失值 | NaN/无穷值 | 离群值 |", "|---|---:|---:|---:|---|"]
     for item in results:
         outliers = ", ".join(f"{key}:{value}" for key, value in item["outliers"].items()) or "-"
         lines.append(f"| {item['path']} | {item['rows']} | {item['missing']} | {item['invalid']} | {outliers} |")
@@ -101,7 +101,7 @@ def markdown(results: list[dict[str, Any]]) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check CSV/JSON result files")
+    parser = argparse.ArgumentParser(description="检查 CSV/JSON 结果文件")
     parser.add_argument("path")
     parser.add_argument("--output")
     args = parser.parse_args()

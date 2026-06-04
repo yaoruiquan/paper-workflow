@@ -1,24 +1,24 @@
-# Gate: Stage N - Name
+# 关卡：阶段 N - 名称
 
-**Status**: BLOCK
-**Checked At**: YYYY-MM-DD
-**Checked By**: Agent
+**状态**: BLOCK
+**检查时间**: YYYY-MM-DD
+**检查人**: Agent
 
-## Passed Items
-- [ ] Item
+## 已通过项
+- [ ] 检查项
 
-## Conditional Items
-- [ ] Item
-Mitigation:
+## 条件通过项
+- [ ] 检查项
+缓解方案：
 
-## Blocking Items
-- [ ] Item
-Fix:
+## 阻塞项
+- [ ] 检查项
+修复动作：
 
-## Decision Rationale
+## 判定理由
 
-Write the reason for the decision.
+写清楚本次判定原因。
 
-## Next Action
+## 下一步动作
 
-Write the next concrete action.
+写清楚下一步具体动作。

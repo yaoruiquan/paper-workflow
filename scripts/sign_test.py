@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a paired two-sided sign test from CSV columns."""
+"""根据 CSV 列执行配对双侧符号检验。"""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def binom_p_two_sided(wins: int, losses: int) -> float:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Paired sign test")
+    parser = argparse.ArgumentParser(description="配对符号检验")
     parser.add_argument("csv_path")
     parser.add_argument("--baseline-col", default="baseline")
     parser.add_argument("--method-col", default="method")
@@ -43,12 +43,12 @@ def main() -> int:
             else:
                 ties += 1
     p_value = binom_p_two_sided(wins, losses)
-    print("# Paired Sign Test\n")
-    print(f"- wins: {wins}")
-    print(f"- losses: {losses}")
-    print(f"- ties: {ties}")
-    print(f"- skipped: {skipped}")
-    print(f"- two_sided_p: {p_value:.6g}")
+    print("# 配对符号检验\n")
+    print(f"- 优于基线: {wins}")
+    print(f"- 低于基线: {losses}")
+    print(f"- 持平: {ties}")
+    print(f"- 跳过: {skipped}")
+    print(f"- 双侧 p 值: {p_value:.6g}")
     return 0 if p_value < 0.05 else 2
 
 

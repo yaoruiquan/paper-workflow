@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarize numeric result files into Markdown tables."""
+"""将数值结果文件汇总为 Markdown 表格。"""
 
 from __future__ import annotations
 
@@ -51,12 +51,12 @@ def iter_files(root: Path) -> list[Path]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Summarize result files")
+    parser = argparse.ArgumentParser(description="汇总结果文件")
     parser.add_argument("path")
     parser.add_argument("--output")
     args = parser.parse_args()
     root = Path(args.path).expanduser().resolve()
-    lines = ["# Result Summary", "", "| File | Metric | N | Mean |", "|---|---|---:|---:|"]
+    lines = ["# 结果汇总", "", "| 文件 | 指标 | 样本数 | 均值 |", "|---|---|---:|---:|"]
     for file_path in iter_files(root):
         for source, metric, count, avg in summarize(file_path):
             lines.append(f"| {source} | {metric} | {count} | {avg:.6g} |")

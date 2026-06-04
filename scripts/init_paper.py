@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Initialize a stage-gated paper project."""
+"""初始化阶段关卡式论文项目。"""
 
 from __future__ import annotations
 
@@ -9,12 +9,12 @@ from pathlib import Path
 
 
 STAGES = [
-    (1, "topic", "Topic"),
-    (2, "experiment-design", "Experiment Design"),
-    (3, "experiment-run", "Experiment Run"),
-    (4, "outline", "Outline"),
-    (5, "writing", "Writing"),
-    (6, "review", "Review"),
+    (1, "topic", "选题"),
+    (2, "experiment-design", "实验设计"),
+    (3, "experiment-run", "实验运行"),
+    (4, "outline", "大纲"),
+    (5, "writing", "写作"),
+    (6, "review", "审查"),
 ]
 
 
@@ -33,7 +33,7 @@ def env_text(args: argparse.Namespace) -> str:
             f"PAGE_LIMIT={args.pages or ''}",
             f"FIELD={args.field or ''}",
             "CURRENT_STAGE=1",
-            "CURRENT_STAGE_NAME=topic",
+            "CURRENT_STAGE_NAME=选题",
             "AUTHOR_MODE=single",
             "EXPERIMENT_TRACKING=local",
             "",
@@ -42,44 +42,44 @@ def env_text(args: argparse.Namespace) -> str:
 
 
 def paper_md(args: argparse.Namespace) -> str:
-    return f"""# {args.title or 'Untitled Paper'}
+    return f"""# {args.title or '未命名论文'}
 
-**Target Venue**: {args.target_venue or 'TBD'}
-**Page Limit**: {args.pages or 'TBD'}
-**Field**: {args.field or 'TBD'}
-**Initialized At**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+**目标会议/期刊**: {args.target_venue or '待填写'}
+**页数限制**: {args.pages or '待填写'}
+**研究领域**: {args.field or '待填写'}
+**初始化时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-## Research Question
+## 研究问题
 
-TBD
+待填写
 
-## Contribution
+## 贡献点
 
-TBD
+待填写
 
-## Current Stage
+## 当前阶段
 
-Stage 1 - Topic
+阶段 1 - 选题
 
-## Notes
+## 说明
 
-Use `stage/` artifacts and `GATE.md` files as the source of truth.
+以 `stage/` 阶段产物和 `GATE.md` 关卡文件作为事实源。
 """
 
 
 def gate_check_stub(stage_num: int, name: str) -> str:
-    return f"""# Gate Check: Stage {stage_num} - {name}
+    return f"""# 关卡检查：阶段 {stage_num} - {name}
 
-**Status**: BLOCK
-**Updated At**: {datetime.now().strftime('%Y-%m-%d')}
+**状态**: BLOCK
+**更新时间**: {datetime.now().strftime('%Y-%m-%d')}
 
-## Required Items
+## 必需项
 
-- [ ] Fill this stage's required artifacts.
+- [ ] 补齐本阶段必需产物。
 
-## Notes
+## 说明
 
-Run `python3 scripts/gate_check.py <project_dir> --stage {stage_num}` from the skill directory for an automated file-presence check.
+在 skill 目录下运行 `python3 scripts/gate_check.py <project_dir> --stage {stage_num}`，可自动检查必需文件是否存在。
 """
 
 
@@ -97,8 +97,8 @@ def create_stage(root: Path, stage_num: int, slug: str, display: str, force: boo
             "artifacts/statistical-tests",
         ]:
             (stage_dir / child).mkdir(parents=True, exist_ok=True)
-        write_once(stage_dir / "artifacts/experiment-log.md", "# Experiment Log\n\n", force=force)
-        write_once(stage_dir / "artifacts/anomaly-report.md", "# Anomaly Report\n\n", force=force)
+        write_once(stage_dir / "artifacts/experiment-log.md", "# 实验日志\n\n", force=force)
+        write_once(stage_dir / "artifacts/anomaly-report.md", "# 异常报告\n\n", force=force)
     if stage_num == 5:
         for version in ["v1", "v2", "v3"]:
             (stage_dir / "drafts" / version).mkdir(parents=True, exist_ok=True)
@@ -118,7 +118,7 @@ def init_project(args: argparse.Namespace) -> Path:
     root.mkdir(parents=True, exist_ok=True)
     write_once(root / ".paper-workflow.env", env_text(args), force=args.force)
     write_once(root / "PAPER.md", paper_md(args), force=args.force)
-    write_once(root / "bibliography" / "references.bib", "% Add BibTeX references here.\n", force=args.force)
+    write_once(root / "bibliography" / "references.bib", "% 在这里添加 BibTeX 参考文献。\n", force=args.force)
 
     for child in [
         "experiment/configs",
@@ -134,7 +134,7 @@ def init_project(args: argparse.Namespace) -> Path:
 
     write_once(
         root / "experiment" / "logs" / "experiment-log.md",
-        "# Experiment Log\n\n| Run ID | Date | Commit | Config | Dataset | Seed | Output | Status | Notes |\n|---|---|---|---|---|---:|---|---|---|\n",
+        "# 实验日志\n\n| 运行编号 | 日期 | 代码提交 | 配置 | 数据集 | 随机种子 | 输出路径 | 状态 | 备注 |\n|---|---|---|---|---|---:|---|---|---|\n",
         force=args.force,
     )
 
@@ -145,17 +145,17 @@ def init_project(args: argparse.Namespace) -> Path:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Initialize a paper workflow project")
+    parser = argparse.ArgumentParser(description="初始化论文工作流项目")
     parser.add_argument("project_dir")
     parser.add_argument("--title", default="")
     parser.add_argument("--target-venue", default="")
     parser.add_argument("--pages", type=int, default=0)
     parser.add_argument("--field", default="")
-    parser.add_argument("--force", action="store_true", help="overwrite scaffold files")
+    parser.add_argument("--force", action="store_true", help="覆盖脚手架文件")
     args = parser.parse_args()
     root = init_project(args)
-    print(f"initialized: {root}")
-    print(f"status: python3 scripts/status.py {root}")
+    print(f"已初始化: {root}")
+    print(f"查看状态: python3 scripts/status.py {root}")
     return 0
 
 

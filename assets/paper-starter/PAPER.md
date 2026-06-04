@@ -1,17 +1,17 @@
-# Untitled Paper
+# 未命名论文
 
-**Target Venue**: TBD
-**Page Limit**: TBD
-**Field**: TBD
+**目标会议/期刊**: 待填写
+**页数限制**: 待填写
+**研究领域**: 待填写
 
-## Research Question
+## 研究问题
 
-TBD
+待填写
 
-## Contribution
+## 贡献点
 
-TBD
+待填写
 
-## Evidence Summary
+## 证据摘要
 
-TBD
+待填写

@@ -1,40 +1,40 @@
-# Gate Protocol
+# 关卡判定协议
 
-Gate decisions are written into `GATE.md`.
+关卡判定必须写入 `GATE.md`。
 
-## Status Values
+## 状态取值
 
-- `PASS`: no blocking issue remains.
-- `CONDITIONAL_PASS`: only partial issues remain, each has a mitigation plan, and the next stage can absorb the risk.
-- `BLOCK`: at least one required artifact or one hard condition is missing.
+- `PASS`：没有剩余阻塞问题。
+- `CONDITIONAL_PASS`：只剩局部问题，每个问题都有缓解方案，且下一阶段可以吸收风险。
+- `BLOCK`：至少缺少一个必需产物，或存在一个硬性阻塞条件。
 
-## Gate File Template
+## 关卡文件模板
 
 ```markdown
-# Gate: Stage N - Name
+# 关卡：阶段 N - 名称
 
-**Status**: PASS | CONDITIONAL_PASS | BLOCK
-**Checked At**: YYYY-MM-DD
-**Checked By**: User / Agent
+**状态**: PASS | CONDITIONAL_PASS | BLOCK
+**检查时间**: YYYY-MM-DD
+**检查人**: 用户 / Agent
 
-## Passed Items
+## 已通过项
 - [x] ...
 
-## Conditional Items
+## 条件通过项
 - [ ] ...
-Mitigation: ...
+缓解方案：...
 
-## Blocking Items
+## 阻塞项
 - [ ] ...
-Fix: ...
+修复动作：...
 
-## Decision Rationale
+## 判定理由
 ...
 
-## Next Action
+## 下一步动作
 ...
 ```
 
-## Implicit Gate Trigger
+## 隐式触发
 
-If the user asks to start the next stage, check the current stage gate first. If `GATE.md` is absent, run `scripts/gate_check.py` and ask the user to resolve blocking items or approve a conditional pass.
+如果用户要求进入下一阶段，必须先检查当前阶段关卡。如果缺少 `GATE.md`，先运行 `scripts/gate_check.py`，再要求解决阻塞项或明确批准条件通过。

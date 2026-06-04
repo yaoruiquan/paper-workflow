@@ -1,3 +1,3 @@
-# Experiment Scripts
+# 实验脚本
 
-Each runnable experiment script should record config, seed, output path, and commit metadata.
+每个可运行实验脚本都应记录配置、随机种子、输出路径和代码提交信息。

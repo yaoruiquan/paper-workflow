@@ -1,39 +1,39 @@
-# Outline And Writing
+# 大纲和写作
 
-## Outline Rules
+## 大纲规则
 
-Before drafting, create:
+写草稿前必须先创建：
 
-- `outline.md`: each section has 3-5 bullets.
-- `page-budget.md`: page and word budget by section.
-- `section-experiment-map.md`: each claim mapped to data, figure, table, or citation.
-- `storyline.md`: the narrative from problem to method to evidence.
+- `outline.md`：每个章节写 3-5 条要点。
+- `page-budget.md`：按章节分配页数和字数预算。
+- `section-experiment-map.md`：每个主张都映射到数据、图、表或引用。
+- `storyline.md`：写清楚从问题、方法到证据的叙事线。
 
-## Page Budget Template
+## 页数预算模板
 
-| Section | Pages | Approx words | Required evidence |
+| 章节 | 页数 | 约略字数 | 必需证据 |
 |---|---:|---:|---|
-| Abstract | 0.25 | 150-250 | Main result and contribution |
-| Introduction | 1.0 | 700-900 | Problem, gap, contribution |
-| Related Work | 1.0 | 700-900 | Literature clusters |
-| Method | 1.5 | 1000-1300 | Algorithm/design details |
-| Experiments | 2.0 | 1400-1800 | Main results, ablation, analysis |
-| Conclusion | 0.25 | 150-250 | Claim boundaries |
+| 摘要 | 0.25 | 150-250 | 主结果和贡献 |
+| 引言 | 1.0 | 700-900 | 问题、研究空白、贡献 |
+| 相关工作 | 1.0 | 700-900 | 文献类别和对比 |
+| 方法 | 1.5 | 1000-1300 | 算法或设计细节 |
+| 实验 | 2.0 | 1400-1800 | 主结果、消融、分析 |
+| 结论 | 0.25 | 150-250 | 主张边界 |
 
-Adjust this table to the target venue before writing.
+写作前根据目标会议或期刊要求调整该表。
 
-## Draft Versions
+## 草稿版本
 
-| Version | Goal | Completion Signal |
+| 版本 | 目标 | 完成信号 |
 |---|---|---|
-| v1 | Fill all sections with evidence-backed content | No empty section |
-| v2 | Terminology, figures, and tables are consistent | No placeholder figures |
-| v3 | Improve readability and transitions | Reader can follow without notes |
-| v4+ | Reviewer-facing refinement | No critical/high review issues |
+| v1 | 用证据支撑的内容填满所有章节 | 没有空章节 |
+| v2 | 统一术语、图和表 | 没有占位图 |
+| v3 | 提升可读性和段落衔接 | 读者无需额外说明即可理解 |
+| v4+ | 按审稿人视角精修 | 没有严重或高优先级问题 |
 
-## Writing Rules
+## 写作规则
 
-- Write the experiments into the outline before prose drafting.
-- Do not claim improvement without a mapped result.
-- Keep limitations explicit when evidence is partial.
-- Preserve version directories; do not overwrite earlier drafts without saving the next version.
+- 写正文前，先把实验内容写进大纲。
+- 没有映射结果时，不要声称方法改进。
+- 证据不完整时，必须明确局限性。
+- 保留版本目录；不要在未保存下一版本的情况下覆盖旧草稿。

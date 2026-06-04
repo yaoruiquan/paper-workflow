@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print paper workflow status."""
+"""打印论文工作流状态。"""
 
 from __future__ import annotations
 
@@ -34,27 +34,27 @@ def read_env(root: Path) -> dict[str, str]:
 def gate_status(stage_dir: Path) -> str:
     gate = stage_dir / "GATE.md"
     if not gate.exists():
-        return "NO_GATE"
+        return "无关卡"
     text = gate.read_text(encoding="utf-8", errors="ignore")
-    match = re.search(r"\*\*Status\*\*\s*:\s*([A-Z_]+)", text)
-    return match.group(1) if match else "UNKNOWN"
+    match = re.search(r"\*\*(?:Status|状态)\*\*\s*:\s*([A-Z_]+)", text)
+    return match.group(1) if match else "未知"
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Print paper workflow status")
+    parser = argparse.ArgumentParser(description="打印论文工作流状态")
     parser.add_argument("project_dir")
     args = parser.parse_args()
     root = Path(args.project_dir).expanduser().resolve()
     env = read_env(root)
-    print(f"Project: {root}")
-    print(f"Title: {env.get('PAPER_TITLE', '') or 'TBD'}")
-    print(f"Current stage: {env.get('CURRENT_STAGE', 'unknown')} {env.get('CURRENT_STAGE_NAME', '')}")
+    print(f"项目: {root}")
+    print(f"标题: {env.get('PAPER_TITLE', '') or '待填写'}")
+    print(f"当前阶段: {env.get('CURRENT_STAGE', 'unknown')} {env.get('CURRENT_STAGE_NAME', '')}")
     print("")
-    print("| Stage | Directory | Gate |")
+    print("| 阶段 | 目录 | 关卡 |")
     print("|---:|---|---|")
     for number, slug in STAGES:
         stage_dir = root / "stage" / f"{number}-{slug}"
-        exists = "exists" if stage_dir.exists() else "missing"
+        exists = "存在" if stage_dir.exists() else "缺失"
         print(f"| {number} | stage/{number}-{slug} ({exists}) | {gate_status(stage_dir)} |")
     return 0
 

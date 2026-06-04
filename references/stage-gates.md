@@ -1,8 +1,8 @@
-# Stage Gate Checklists
+# 阶段关卡检查清单
 
-## Stage 1 Topic Gate
+## 阶段 1：选题关卡
 
-Required artifacts:
+必需产物：
 
 - `artifacts/topic-proposal.md`
 - `artifacts/gap-analysis.md`
@@ -10,87 +10,87 @@ Required artifacts:
 - `artifacts/core-refs.bib`
 - `artifacts/feasibility-check.md`
 
-Block if:
+出现以下情况应阻塞：
 
-- The contribution is only a domain swap with no method or evidence novelty.
-- The contribution is only hyperparameter tuning.
-- The core data or compute budget is infeasible.
-- The expected claim cannot be evaluated.
+- 贡献点只是换了应用领域，没有方法或证据层面的新意。
+- 贡献点只是调参。
+- 核心数据或算力预算不可行。
+- 预期主张无法被评估。
 
-## Stage 2 Experiment Design Gate
+## 阶段 2：实验设计关卡
 
-Required artifacts:
+必需产物：
 
 - `artifacts/experiment-design.md`
 - `artifacts/evaluation-protocol.md`
 - `artifacts/baseline-results.md`
 - `artifacts/project-check.md`
 
-Block if:
+出现以下情况应阻塞：
 
-- Baseline is not runnable.
-- Metric definitions are ambiguous.
-- Seed/config/commit tracking is missing.
-- Estimated compute cost exceeds the available schedule.
+- 基线无法运行。
+- 指标定义不清晰。
+- 缺少随机种子、配置或代码提交记录。
+- 预计计算成本超过可用时间。
 
-## Stage 3 Experiment Run Gate
+## 阶段 3：实验运行关卡
 
-Required artifacts:
+必需产物：
 
 - `artifacts/main-results/`
 - `artifacts/experiment-log.md`
 - `artifacts/anomaly-report.md`
 - `artifacts/statistical-tests/`
 
-Block if:
+出现以下情况应阻塞：
 
-- Main results contain unaddressed NaN/inf values.
-- A key table or figure is missing.
-- Multi-seed variance is unexplained.
-- Results do not support the core claim and no rollback is recorded.
+- 主结果包含未解释的 `NaN` 或无穷值。
+- 缺少关键表格或图。
+- 多随机种子方差没有解释。
+- 结果不支持核心主张，且没有回退记录。
 
-## Stage 4 Outline Gate
+## 阶段 4：大纲关卡
 
-Required artifacts:
+必需产物：
 
 - `artifacts/outline.md`
 - `artifacts/page-budget.md`
 - `artifacts/storyline.md`
 - `artifacts/section-experiment-map.md`
 
-Block if:
+出现以下情况应阻塞：
 
-- Any major claim lacks a mapped experiment, figure, table, or citation.
-- Page budget conflicts with venue constraints.
-- Experimental content is absent from the outline.
+- 任一主要主张没有映射到实验、图、表或引用。
+- 页数预算与会议或期刊约束冲突。
+- 大纲中没有体现实验内容。
 
-## Stage 5 Writing Gate
+## 阶段 5：写作关卡
 
-Required artifacts:
+必需产物：
 
 - `drafts/v1/`
 - `drafts/v2/`
 - `checkpoints/content-freeze.md`
 
-Block if:
+出现以下情况应阻塞：
 
-- Any section is empty.
-- Draft contains placeholder figures or unresolved `[TODO]`.
-- Terms are inconsistent across sections.
-- Content freeze is requested while critical evidence is missing.
+- 任一章节为空。
+- 草稿包含占位图或未解决的 `[TODO]`。
+- 章节之间术语不一致。
+- 关键证据缺失时仍要求内容冻结。
 
-## Stage 6 Review Gate
+## 阶段 6：审查关卡
 
-Required artifacts:
+必需产物：
 
 - `artifacts/review-1-format/report.md`
 - `artifacts/review-2-logic/report.md`
 - `artifacts/review-3-language/report.md`
 - `artifacts/final-check/submission-ready.md`
 
-Block if:
+出现以下情况应阻塞：
 
-- Format review finds template mismatch in references, equations, figures, or tables.
-- Logic review finds unsupported claims.
-- Experiment completeness review finds missing baselines, ablations, or statistical checks.
-- Language review is being used to mask unresolved evidence problems.
+- 格式审查发现参考文献、公式、图或表与模板要求不一致。
+- 逻辑审查发现无证据支撑的主张。
+- 实验完整性审查发现缺少基线、消融或统计检验。
+- 试图用语言润色掩盖未解决的证据问题。

@@ -1,58 +1,58 @@
-# Review Protocol
+# 审查协议
 
-Run review in this order and write each report as Markdown.
+按以下顺序执行审查，并将每一遍审查报告写成 Markdown 文件。
 
-## Review 1: Format
+## 第一遍：格式审查
 
-First extract the template or venue requirements. Then check:
+先提取模板或会议/期刊格式要求，再检查：
 
-- Page size, margins, columns, font size, line spacing.
-- Figure and table margins, caption position, numbering, cross-references.
-- Equations inserted as formulas, not plain text; equations must be numbered when the style requires it.
-- Reference format, DOI presence, bibliography style, and in-text citation style.
-- Section heading levels and title capitalization.
-- Table width and figure resolution.
+- 页面尺寸、页边距、分栏、字号、行距。
+- 图表边距、标题位置、编号、交叉引用。
+- 公式必须以公式形式插入，不能是纯文本；格式要求编号时必须编号。
+- 参考文献格式、DOI、文献表样式和正文引用格式。
+- 章节标题层级和标题格式。
+- 表格宽度和图片分辨率。
 
-Report path:
+报告路径：
 
 `stage/6-review/artifacts/review-1-format/report.md`
 
-## Review 2: Logic And Experiment Completeness
+## 第二遍：逻辑和实验完整性审查
 
-Check:
+检查：
 
-- Research question, method, experiment, and conclusion form a closed loop.
-- Every central claim has mapped evidence.
-- Baselines are appropriate and not cherry-picked.
-- Ablations and sensitivity checks cover the method's actual components.
-- Statistical tests or multi-seed stability support performance claims.
-- Limitations are honest and do not contradict conclusions.
+- 研究问题、方法、实验和结论是否闭环。
+- 每个核心主张是否都有映射证据。
+- 基线是否合适，是否存在选择性对比。
+- 消融和敏感性分析是否覆盖方法的真实组成部分。
+- 统计检验或多随机种子稳定性是否支撑性能主张。
+- 局限性是否诚实，且不与结论冲突。
 
-Report path:
+报告路径：
 
 `stage/6-review/artifacts/review-2-logic/report.md`
 
-## Review 3: Language
+## 第三遍：语言审查
 
-Run only after format and logic blockers are resolved.
+仅在格式和逻辑阻塞项解决后执行。
 
-Check:
+检查：
 
-- Terminology consistency.
-- Paragraph flow and topic sentences.
-- Tense, article usage, punctuation, and unit formatting.
-- Overclaiming and vague phrases.
-- Abstract and introduction alignment with final results.
+- 术语一致性。
+- 段落衔接和主题句。
+- 时态、冠词、标点和单位格式。
+- 过度声称和模糊表达。
+- 摘要、引言与最终结果是否一致。
 
-Report path:
+报告路径：
 
 `stage/6-review/artifacts/review-3-language/report.md`
 
-## Issue Levels
+## 问题等级
 
-| Level | Meaning | Action |
+| 等级 | 含义 | 动作 |
 |---|---|---|
-| Critical | Data error, logic break, unsupported conclusion, ethics issue | Must fix |
-| High | Major evidence, readability, or reproducibility risk | Fix before submission |
-| Medium | Terminology, maintainability, or minor structure issue | Schedule fix |
-| Low | Style or optional polish | Optional |
+| 严重 | 数据错误、逻辑断裂、结论无支撑、伦理问题 | 必须修复 |
+| 高 | 重大证据、可读性或可复现性风险 | 投稿前修复 |
+| 中 | 术语、可维护性或轻微结构问题 | 安排修复 |
+| 低 | 风格或可选润色 | 可选处理 |

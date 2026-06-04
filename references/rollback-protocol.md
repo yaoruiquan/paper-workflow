@@ -1,36 +1,36 @@
-# Rollback Protocol
+# 回退协议
 
-Use rollback when later work invalidates earlier assumptions.
+当后续工作推翻早期假设时，必须使用回退。
 
-## Common Paths
+## 常见路径
 
-| Situation | Rollback |
+| 情况 | 回退 |
 |---|---|
-| Results do not support the hypothesis | Stage 3 -> Stage 2 |
-| Outline lacks enough evidence | Stage 4 -> Stage 3 |
-| Draft story is incoherent | Stage 5 -> Stage 4 |
-| Review finds unsupported claims | Stage 6 -> Stage 4 or Stage 3 |
-| Review finds experiment design flaw | Stage 6 -> Stage 2 |
+| 结果不支持假设 | 阶段 3 -> 阶段 2 |
+| 大纲缺少足够证据 | 阶段 4 -> 阶段 3 |
+| 草稿故事线不连贯 | 阶段 5 -> 阶段 4 |
+| 审查发现无证据支撑的主张 | 阶段 6 -> 阶段 4 或阶段 3 |
+| 审查发现实验设计缺陷 | 阶段 6 -> 阶段 2 |
 
-## Rollback Record
+## 回退记录
 
-Write records under `stage/rollback/`.
+回退记录写入 `stage/rollback/`。
 
 ```markdown
-# Rollback: Stage X -> Stage Y
+# 回退：阶段 X -> 阶段 Y
 
-**Time**: YYYY-MM-DD
-**Reason**: ...
-**Problem**: ...
-**Affected Artifacts**:
+**时间**: YYYY-MM-DD
+**原因**: ...
+**问题**: ...
+**受影响产物**:
 - ...
-**Recovery Plan**:
+**恢复计划**:
 - ...
-**Estimated Cost**: ...
+**预计成本**: ...
 ```
 
-## Restrictions
+## 限制
 
-- Do not silently delete later-stage work.
-- If content freeze exists, write an unfreeze note before changing frozen content.
-- If the same issue causes three rollbacks, stop and ask for human decision.
+- 不要静默删除后续阶段产物。
+- 如果已经存在内容冻结记录，修改冻结内容前必须写解除冻结说明。
+- 如果同一问题导致三次回退，停止并要求人工决策。

@@ -1,0 +1,7 @@
+experiment_id: exp-001
+seed: 42
+dataset: TBD
+method: TBD
+metrics:
+  - accuracy
+  - f1

@@ -26,6 +26,7 @@ Codex 安装位置：
 - 你要按页数或投稿格式规划大纲。
 - 你要按 `v1`、`v2`、`v3` 迭代写草稿。
 - 你要审查论文格式、逻辑闭环、实验完整性和语言质量。
+- 你要生成或检查 Word、会议模板、双栏排版、公式、图表和中英文稿格式。
 
 ## 初始化论文项目
 
@@ -109,6 +110,7 @@ python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col m
 - 实验必须记录数据、配置、随机种子、代码提交、输出路径和异常。
 - 写作前必须建立章节-实验证据映射。
 - 审查顺序固定为：格式、逻辑和实验完整性、语言。
+- Word/会议格式产物必须先确认模板或 checklist；公式、图表、表格要做结构级检查。
 - 如果后续阶段发现证据不足，先回退，再继续写作。
 
 ## 参考文件
@@ -118,5 +120,6 @@ python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col m
 - `references/experiment-project.md`：实验项目规范。
 - `references/writing-outline.md`：大纲和写作。
 - `references/review-protocol.md`：审查协议。
+- `references/word-format-protocol.md`：Word/会议格式产物协议。
 - `references/gate-protocol.md`：关卡判定。
 - `references/rollback-protocol.md`：回退协议。

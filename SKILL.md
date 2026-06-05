@@ -26,6 +26,7 @@ description: 管理论文从选题、文献调研、实验设计、实验运行�
 - 实验项目规范：`references/experiment-project.md`
 - 大纲和写作：`references/writing-outline.md`
 - 审查流程：`references/review-protocol.md`
+- Word/会议格式产物：`references/word-format-protocol.md`
 - Gate 判定：`references/gate-protocol.md`
 - 回退流程：`references/rollback-protocol.md`
 
@@ -76,6 +77,7 @@ python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col m
 6. 写草稿时，每个版本必须放入 `stage/5-writing/drafts/vN/`。
 7. 审查时，每一遍审查都必须写入 `stage/6-review/artifacts/review-*/report.md`。
 8. 如果后续阶段发现实验缺口、故事线弱或 claim 无证据支撑，先创建 rollback 记录，再继续处理。
+9. 如果用户要求 Word、会议模板、双栏排版、公式/图表格式或中英文稿，读取 `references/word-format-protocol.md` 后再生成产物。
 
 ## 阶段规则
 
@@ -92,6 +94,8 @@ python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col m
 - 格式审查必须检查图表边距、caption 位置、公式是否为真实公式而非纯文本、公式编号、DOI/参考文献格式和正文引用格式。
 - 第二遍逻辑审查必须检查 claim-evidence 闭环、实验完整性、baseline、消融、局限性和结论是否有数据支撑。
 - 第三遍语言审查不能掩盖逻辑或数据问题；如果逻辑被阻塞，先 rollback，不要直接润色。
+- 每次格式或实验修复都必须生成版本化产物，并写入对应 `.md` 记录，说明修复项、验证命令、通过项和剩余风险。
+- 不能因为“文档已生成”就宣称完成；必须至少完成结构检查、实验检查或渲染级检查中的相应最小验证。
 
 ## 脚本职责
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Paper Workflow"
-  short_description: "Stage-gated academic paper workflow"
-  default_prompt: "Use $paper-workflow to initialize and manage a research paper project from topic selection through experiments, drafting, and review."
+  short_description: "Stage-gated paper projects with experiments, drafts, review, and DOCX format audits"
+  default_prompt: "Use $paper-workflow to manage a research paper project from topic selection through traceable experiments, evidence-mapped drafting, Word/meeting-template formatting, and review."

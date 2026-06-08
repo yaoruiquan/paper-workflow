@@ -20,6 +20,7 @@
 - 进入新阶段前，必须检查上一阶段关卡。
 - 后续阶段发现证据缺口时，先回退，不要靠文字包装掩盖问题。
 - 实验必须记录配置、随机种子、代码提交、评价指标和运行日志，保证可复现。
+- 初始化时通过 `PAPER_PROFILE` 区分 `generic`、`simulation`、`ml-experiment`、`engineering-design` 和 `review`，Stage 3 关卡按论文类型检查不同证据。
 
 ## 推荐项目结构
 

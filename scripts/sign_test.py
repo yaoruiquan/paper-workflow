@@ -23,7 +23,10 @@ def main() -> int:
     parser.add_argument("csv_path")
     parser.add_argument("--baseline-col", default="baseline")
     parser.add_argument("--method-col", default="method")
-    parser.add_argument("--higher-is-better", action="store_true", default=True)
+    direction = parser.add_mutually_exclusive_group()
+    direction.add_argument("--higher-is-better", dest="higher_is_better", action="store_true", default=True)
+    direction.add_argument("--lower-is-better", dest="higher_is_better", action="store_false")
+    parser.add_argument("--output", help="将 Markdown 报告写入指定路径")
     args = parser.parse_args()
 
     wins = losses = ties = skipped = 0
@@ -43,12 +46,22 @@ def main() -> int:
             else:
                 ties += 1
     p_value = binom_p_two_sided(wins, losses)
-    print("# 配对符号检验\n")
-    print(f"- 优于基线: {wins}")
-    print(f"- 低于基线: {losses}")
-    print(f"- 持平: {ties}")
-    print(f"- 跳过: {skipped}")
-    print(f"- 双侧 p 值: {p_value:.6g}")
+    direction_label = "higher-is-better" if args.higher_is_better else "lower-is-better"
+    lines = [
+        "# 配对符号检验",
+        "",
+        f"- 指标方向: {direction_label}",
+        f"- 优于基线: {wins}",
+        f"- 低于基线: {losses}",
+        f"- 持平: {ties}",
+        f"- 跳过: {skipped}",
+        f"- 双侧 p 值: {p_value:.6g}",
+        "",
+    ]
+    text = "\n".join(lines)
+    if args.output:
+        Path(args.output).expanduser().write_text(text, encoding="utf-8")
+    print(text)
     return 0 if p_value < 0.05 else 2
 
 

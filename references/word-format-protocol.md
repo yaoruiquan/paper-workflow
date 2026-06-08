@@ -36,6 +36,12 @@
 
 经验规则：线性文本包在公式编辑器里仍然是不合格公式。
 
+推荐用脚本固化检查：
+
+```bash
+python3 scripts/audit_docx_format.py "<paper.docx>" --output "stage/6-review/artifacts/review-1-format/docx-audit.md"
+```
+
 ## 图表检查
 
 论文图不是“能看见”就合格。图表进入正文前检查：

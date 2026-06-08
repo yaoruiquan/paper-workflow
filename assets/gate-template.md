@@ -1,7 +1,7 @@
-# 关卡：阶段 N - 名称
+# 关卡：阶段 {{STAGE_NUM}} - {{STAGE_NAME}}
 
 **状态**: BLOCK
-**检查时间**: YYYY-MM-DD
+**检查时间**: {{DATE}}
 **检查人**: Agent
 
 ## 已通过项

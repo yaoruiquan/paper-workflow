@@ -23,7 +23,7 @@
 
 - `artifacts/experiment-design.md`
 - `artifacts/evaluation-protocol.md`
-- `artifacts/baseline-results.md`
+- `artifacts/baseline-plan.md`
 - `artifacts/project-check.md`
 
 出现以下情况应阻塞：
@@ -35,12 +35,21 @@
 
 ## 阶段 3：实验运行关卡
 
-必需产物：
+通用必需产物：
 
 - `artifacts/main-results/`
 - `artifacts/experiment-log.md`
 - `artifacts/anomaly-report.md`
-- `artifacts/statistical-tests/`
+
+按 `PAPER_PROFILE` 增加以下必需产物：
+
+| Profile | 追加必需产物 |
+|---|---|
+| `generic` | `artifacts/statistical-tests/` |
+| `ml-experiment` | `artifacts/statistical-tests/`, `artifacts/seed-stability-report.md` |
+| `simulation` | `artifacts/validation-report.md`, `artifacts/result-audit.md` |
+| `engineering-design` | `artifacts/constraint-check.md`, `artifacts/sensitivity/` |
+| `review` | `artifacts/evidence-table.md`, `artifacts/source-quality-check.md` |
 
 出现以下情况应阻塞：
 
@@ -57,6 +66,7 @@
 - `artifacts/page-budget.md`
 - `artifacts/storyline.md`
 - `artifacts/section-experiment-map.md`
+- `artifacts/artifact-plan.md`
 
 出现以下情况应阻塞：
 
@@ -70,6 +80,7 @@
 
 - `drafts/v1/`
 - `drafts/v2/`
+- `drafts/v3/`
 - `checkpoints/content-freeze.md`
 
 出现以下情况应阻塞：

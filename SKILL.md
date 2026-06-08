@@ -1,6 +1,6 @@
 ---
 name: paper-workflow
-description: 管理论文从选题、文献调研、实验设计、实验运行、大纲规划、草稿迭代到格式/逻辑/语言审查的 Stage-Gate 工作流。适用于用户想交互式确定论文题目、设计可维护实验项目、初始化论文项目、检查实验数据或图表、按页数规划大纲、撰写版本化草稿、按模板审查论文格式、核查实验闭环或维护论文流程产物。
+description: 管理论文从选题、文献调研、实验设计、实验运行、大纲规划、草稿迭代到格式/逻辑/语言审查的 Stage-Gate 工作流。适用于用户想交互式确定论文题目、设计可维护实验项目、初始化论文项目、检查实验数据或图表、按页数规划大纲、撰写版本化草稿、按模板审查论文格式、核查实验闭环、生成/审查 Word 双栏会议论文、公式/图表/表格格式或中英文稿。
 ---
 
 # paper-workflow
@@ -37,7 +37,7 @@ description: 管理论文从选题、文献调研、实验设计、实验运行�
 初始化论文项目：
 
 ```bash
-python3 scripts/init_paper.py "<project_dir>" --title "<论文标题>" --target-venue "<会议或期刊>" --pages 8
+python3 scripts/init_paper.py "<project_dir>" --title "<论文标题>" --target-venue "<会议或期刊>" --pages 8 --profile simulation
 ```
 
 查看当前状态：
@@ -62,9 +62,10 @@ python3 scripts/rollback.py "<project_dir>" --from-stage 6 --to-stage 3 --reason
 
 ```bash
 python3 scripts/check_stat.py "<project_dir>/experiment/results"
-python3 scripts/check_seed_stability.py "<csv_path>" --group-col experiment --metric-col metric --seed-col seed --value-col value
+python3 scripts/check_seed_stability.py "<csv_path>" --group-col experiment --metric-col metric --seed-col seed --value-col value --output "<report.md>"
 python3 scripts/summarize_results.py "<project_dir>/experiment/results"
-python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col method
+python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col method --lower-is-better --output "<report.md>"
+python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
 ```
 
 ## 最短执行骨架
@@ -83,8 +84,8 @@ python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col m
 
 1. Stage 1 选题在用户想法模糊时必须交互推进，产出 `topic-proposal.md`、`gap-analysis.md`、`literature-survey.md` 和 `feasibility-check.md`。
 2. Stage 2 实验设计必须产出可维护实验方案，并在 `experiment/` 下保留 `data/`、`src/`、`configs/`、`scripts/`、`results/`、`figures/`、`logs/` 等目录。
-3. Stage 3 跑实验必须记录原始输出、处理后汇总、图表文件、seed/config/commit 元数据和异常说明。
-4. Stage 4 大纲必须包含页数预算、每节字数预算、格式假设和章节-实验映射。
+3. Stage 3 跑实验必须记录原始输出、处理后汇总、图表文件、seed/config/commit 元数据和异常说明；根据 `PAPER_PROFILE` 执行统计检验、仿真约束验证或来源质量检查。
+4. Stage 4 大纲必须包含页数预算、每节字数预算、格式假设、章节-实验映射和图/表/公式/结果来源计划。
 5. Stage 5 写作必须按版本迭代：`v1` 填满结构，`v2` 统一术语和图表，`v3` 提升可读性，`v4+` 解决审稿人视角问题。
 6. Stage 6 审查必须按顺序执行：第一遍格式，第二遍逻辑和实验完整性，第三遍语言。每一遍都必须留下 `.md` 审查报告。
 
@@ -107,6 +108,7 @@ python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col m
 - `scripts/check_seed_stability.py`：按实验计算 mean/std/CV，标记不稳定指标。
 - `scripts/summarize_results.py`：把 CSV/JSON 实验结果汇总成 Markdown 表格。
 - `scripts/sign_test.py`：对 baseline 和 method 列执行配对 sign test。
+- `scripts/audit_docx_format.py`：检查 Word 文档分栏、图表、表格、公式 OMML 结构和线性公式占位符。
 
 ## 事实源规则
 

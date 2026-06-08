@@ -29,6 +29,7 @@ def main() -> int:
     parser.add_argument("--seed-col", default="seed")
     parser.add_argument("--value-col", default="value")
     parser.add_argument("--cv-threshold", type=float, default=0.05)
+    parser.add_argument("--output", help="将 Markdown 报告写入指定路径")
     args = parser.parse_args()
 
     groups: dict[tuple[str, str], list[float]] = defaultdict(list)
@@ -50,7 +51,10 @@ def main() -> int:
         status = "不稳定" if len(values) >= 2 and cv > args.cv_threshold else "正常"
         has_unstable = has_unstable or status == "不稳定"
         lines.append(f"| {experiment} | {metric} | {len(values)} | {avg:.6g} | {std:.6g} | {cv:.4f} | {status} |")
-    print("\n".join(lines) + "\n")
+    text = "\n".join(lines) + "\n"
+    if args.output:
+        Path(args.output).expanduser().write_text(text, encoding="utf-8")
+    print(text)
     return 2 if has_unstable else 0
 
 

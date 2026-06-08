@@ -8,6 +8,8 @@ from datetime import datetime
 from pathlib import Path
 
 
+SKILL_ROOT = Path(__file__).resolve().parents[1]
+
 STAGES = [
     (1, "topic", "选题"),
     (2, "experiment-design", "实验设计"),
@@ -16,6 +18,14 @@ STAGES = [
     (5, "writing", "写作"),
     (6, "review", "审查"),
 ]
+
+
+def render_template(relative_path: str, values: dict[str, str]) -> str:
+    path = SKILL_ROOT / relative_path
+    text = path.read_text(encoding="utf-8")
+    for key, value in values.items():
+        text = text.replace(f"{{{{{key}}}}}", value)
+    return text
 
 
 def write_once(path: Path, text: str, force: bool = False) -> None:
@@ -32,6 +42,7 @@ def env_text(args: argparse.Namespace) -> str:
             f"TARGET_VENUE={args.target_venue or ''}",
             f"PAGE_LIMIT={args.pages or ''}",
             f"FIELD={args.field or ''}",
+            f"PAPER_PROFILE={args.profile}",
             "CURRENT_STAGE=1",
             "CURRENT_STAGE_NAME=选题",
             "AUTHOR_MODE=single",
@@ -42,45 +53,29 @@ def env_text(args: argparse.Namespace) -> str:
 
 
 def paper_md(args: argparse.Namespace) -> str:
-    return f"""# {args.title or '未命名论文'}
-
-**目标会议/期刊**: {args.target_venue or '待填写'}
-**页数限制**: {args.pages or '待填写'}
-**研究领域**: {args.field or '待填写'}
-**初始化时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-## 研究问题
-
-待填写
-
-## 贡献点
-
-待填写
-
-## 当前阶段
-
-阶段 1 - 选题
-
-## 说明
-
-以 `stage/` 阶段产物和 `GATE.md` 关卡文件作为事实源。
-"""
+    return render_template(
+        "assets/paper-starter/PAPER.md",
+        {
+            "TITLE": args.title or "未命名论文",
+            "TARGET_VENUE": args.target_venue or "待填写",
+            "PAGE_LIMIT": str(args.pages or "待填写"),
+            "FIELD": args.field or "待填写",
+            "PAPER_PROFILE": args.profile,
+            "INITIALIZED_AT": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        },
+    )
 
 
 def gate_check_stub(stage_num: int, name: str) -> str:
-    return f"""# 关卡检查：阶段 {stage_num} - {name}
-
-**状态**: BLOCK
-**更新时间**: {datetime.now().strftime('%Y-%m-%d')}
-
-## 必需项
-
-- [ ] 补齐本阶段必需产物。
-
-## 说明
-
-在 skill 目录下运行 `python3 scripts/gate_check.py <project_dir> --stage {stage_num}`，可自动检查必需文件是否存在。
-"""
+    text = render_template(
+        "assets/gate-template.md",
+        {
+            "STAGE_NUM": str(stage_num),
+            "STAGE_NAME": name,
+            "DATE": datetime.now().strftime("%Y-%m-%d"),
+        },
+    )
+    return text + f"\n在 skill 目录下运行 `python3 scripts/gate_check.py <project_dir> --stage {stage_num}`，可自动检查必需文件是否存在。\n"
 
 
 def create_stage(root: Path, stage_num: int, slug: str, display: str, force: bool = False) -> None:
@@ -134,7 +129,7 @@ def init_project(args: argparse.Namespace) -> Path:
 
     write_once(
         root / "experiment" / "logs" / "experiment-log.md",
-        "# 实验日志\n\n| 运行编号 | 日期 | 代码提交 | 配置 | 数据集 | 随机种子 | 输出路径 | 状态 | 备注 |\n|---|---|---|---|---|---:|---|---|---|\n",
+        (SKILL_ROOT / "assets" / "experiment-log-template.md").read_text(encoding="utf-8"),
         force=args.force,
     )
 
@@ -151,6 +146,12 @@ def main() -> int:
     parser.add_argument("--target-venue", default="")
     parser.add_argument("--pages", type=int, default=0)
     parser.add_argument("--field", default="")
+    parser.add_argument(
+        "--profile",
+        choices=["generic", "simulation", "ml-experiment", "engineering-design", "review"],
+        default="generic",
+        help="论文类型，用于选择阶段关卡要求",
+    )
     parser.add_argument("--force", action="store_true", help="覆盖脚手架文件")
     args = parser.parse_args()
     root = init_project(args)

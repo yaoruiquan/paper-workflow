@@ -48,6 +48,7 @@ def main() -> int:
     env = read_env(root)
     print(f"项目: {root}")
     print(f"标题: {env.get('PAPER_TITLE', '') or '待填写'}")
+    print(f"论文类型: {env.get('PAPER_PROFILE', 'generic') or 'generic'}")
     print(f"当前阶段: {env.get('CURRENT_STAGE', 'unknown')} {env.get('CURRENT_STAGE_NAME', '')}")
     print("")
     print("| 阶段 | 目录 | 关卡 |")

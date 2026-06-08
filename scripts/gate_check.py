@@ -37,24 +37,25 @@ REQUIRED = {
     2: [
         "artifacts/experiment-design.md",
         "artifacts/evaluation-protocol.md",
-        "artifacts/baseline-results.md",
+        "artifacts/baseline-plan.md",
         "artifacts/project-check.md",
     ],
     3: [
         "artifacts/main-results",
         "artifacts/experiment-log.md",
         "artifacts/anomaly-report.md",
-        "artifacts/statistical-tests",
     ],
     4: [
         "artifacts/outline.md",
         "artifacts/page-budget.md",
         "artifacts/storyline.md",
         "artifacts/section-experiment-map.md",
+        "artifacts/artifact-plan.md",
     ],
     5: [
         "drafts/v1",
         "drafts/v2",
+        "drafts/v3",
         "checkpoints/content-freeze.md",
     ],
     6: [
@@ -64,6 +65,45 @@ REQUIRED = {
         "artifacts/final-check/submission-ready.md",
     ],
 }
+
+
+PROFILE_REQUIRED = {
+    "generic": {
+        3: ["artifacts/statistical-tests"],
+    },
+    "ml-experiment": {
+        3: ["artifacts/statistical-tests", "artifacts/seed-stability-report.md"],
+    },
+    "simulation": {
+        3: ["artifacts/validation-report.md", "artifacts/result-audit.md"],
+    },
+    "engineering-design": {
+        3: ["artifacts/constraint-check.md", "artifacts/sensitivity"],
+    },
+    "review": {
+        3: ["artifacts/evidence-table.md", "artifacts/source-quality-check.md"],
+    },
+}
+
+
+def read_env(root: Path) -> dict[str, str]:
+    env_path = root / ".paper-workflow.env"
+    data: dict[str, str] = {}
+    if not env_path.exists():
+        return data
+    for line in env_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if "=" not in line or line.strip().startswith("#"):
+            continue
+        key, value = line.split("=", 1)
+        data[key.strip()] = value.strip()
+    return data
+
+
+def requirements_for(root: Path, stage: int) -> list[str]:
+    profile = read_env(root).get("PAPER_PROFILE", "generic") or "generic"
+    if profile not in PROFILE_REQUIRED:
+        profile = "generic"
+    return REQUIRED[stage] + PROFILE_REQUIRED[profile].get(stage, [])
 
 
 def is_present(path: Path) -> bool:
@@ -77,7 +117,7 @@ def is_present(path: Path) -> bool:
 def check_stage(root: Path, stage: int) -> tuple[str, list[tuple[str, bool]]]:
     slug = STAGE_SLUGS[stage]
     stage_dir = root / "stage" / f"{stage}-{slug}"
-    rows = [(item, is_present(stage_dir / item)) for item in REQUIRED[stage]]
+    rows = [(item, is_present(stage_dir / item)) for item in requirements_for(root, stage)]
     status = "PASS" if all(ok for _, ok in rows) else "BLOCK"
     return status, rows
 

@@ -37,11 +37,55 @@ LaTeX 可以作为 Word 主路径的辅助工具，但不能替代 DOCX 审查�
 - 标题、作者和单位如模板要求为单栏，正文从 Abstract/摘要开始再切换双栏。
 - 图和表必须按目标栏宽设置固定宽度；不要让表格自动撑出栏宽。
 - 表格列宽固定，长文本先压缩或合并列，不用缩小到不可读字号解决所有问题。
+- 所有可能跨页的 Word 表格必须将首行设置为“在各页顶端以标题行形式重复出现”（OOXML: `w:tblHeader`）；不要只靠手工复制表头文本。
+- 用户要求某个章节另起一页时，必须插入真实 Word 分页符（OOXML: `w:br w:type="page"`），并用 XML/DOCX 审查确认；不要只靠空段落推挤版面。
 - 公式必须是真实 Word 公式对象；不要用纯文本、截图或伪表格模拟公式。
 - 公式编号通常作为普通文本放在公式对象外，按模板要求右对齐。
 - 中英文稿分开保留 Markdown 源文件；翻译稿不得修改实验数据和结论数值。
 - 用户说不导出 PDF 时，不要导出 PDF；只做 DOCX 结构检查。页数、分页和视觉渲染只能记录为“需 Word/WPS 人工确认”，不能通过临时 PDF 规避该要求。
+- Word/WPS 页数以用户在 Word/WPS 中打开后的结果为最终事实源；LibreOffice/UNO 的页数、分页或渲染结果不能替代 Word/WPS 验收，除非用户明确要求用它做辅助参考。
 - 使用 LaTeX 辅助公式或参考文献时，最终仍需把公式、引用和参考文献落回 Word 文档并重新审查 DOCX。
+
+## 页数压缩和版本管理
+
+当用户反馈 Word 页数超出目标时，使用可回退的压缩路线：
+
+1. 保留当前完整稿，不直接覆盖唯一版本。
+2. 新建短版源稿和短版 Word，例如 `paper-en-compact-short-8page.md` 与 `paper-en-acm-template-short-8page.docx`。
+3. 记录压缩前后词数差；优先压缩重复解释、过长枚举、边界说明和可合并段落，不删除实验数据、图表、参考文献覆盖或核心结论。
+4. 小步压缩：用户只要求“再压缩一些”时，优先每轮减少约 150-250 英文词，而不是一次大幅删减。
+5. 每轮重新生成 DOCX 后，运行 `audit_docx_format.py` 和 `check_acm_docx.py`；如果有章节强制换页要求，增加 `--require-page-break-before-heading "<heading>"`。
+6. 在报告中明确：未做 PDF/渲染检查时，最终页数仍需 Word/WPS 人工确认。
+
+## ACM Word 稳定路线
+
+当模板为 ACM Word submission template 或用户反馈 ACM 前置区、CCS、Keywords、引用、三线表等格式问题时，使用以下固定路线：
+
+1. 复制原始 `.docx` 模板为输出文件，不直接从空白 Word 新建。
+2. 先解析模板前置区并建立锚点表，至少包含 `Title_document`、`Short Title`、`Subtitle`、`Authors`、`Affiliation`、`Abstract`、`CCSDescription`、`KeyWords`、`ACMRefHead`、`ACMRef`、首个 `Head1`、`ReferenceHead` 和 `Bib_entry`。
+3. 作者、单位和通讯作者信息未提供时，保留 ACM 模板作者占位段，不删除作者区；提供后只替换对应文本，不改变样式。
+4. Abstract 后必须先写 `CCS CONCEPTS`，再写 `Additional Keywords and Phrases`；不得残留 `Insert your first CCS term here`、`Insert comma delimited author-supplied keyword list` 等模板假内容。
+5. 正文引用若用户或会议要求右上角样式，必须写成真实 superscript run，并设置小字号；不能只写普通文本 `[n]`。
+6. 参考文献段落使用 ACM `Bib_entry` 自动编号时，源稿中的 `[n]` 只能用于校验，写入 Word 时必须去掉，避免出现自动编号加纯文本编号的重复。
+7. 表格必须按会议要求生成三线表时，禁止使用 `TableGrid` 样式；只保留表头上边线、表头下边线和表尾下边线，不保留竖线或内部网格线；首行必须设置 `w:tblHeader`，确保跨页后第二页自动重复表头。
+8. 生成后必须先运行通用 DOCX 结构审查，再运行 ACM 专项审查：
+
+```bash
+python3 scripts/audit_docx_format.py "<paper.docx>" --output "<docx-audit.md>"
+python3 scripts/check_acm_docx.py "<paper.docx>" --output "<acm-audit.md>"
+python3 scripts/check_acm_docx.py "<paper.docx>" --require-page-break-before-heading "INTRODUCTION" --output "<acm-audit.md>"
+```
+
+`check_acm_docx.py` 未通过时，不能交付 Word；必须修复后重新生成和审查。
+
+## Documents 插件配合
+
+如果当前 Codex 会话暴露了 Documents 插件或本地 `openai-primary-runtime/documents` skill 包，可使用其脚本增强 Word 工作流，但不能绕过用户的输出要求：
+
+- 可使用 Documents skill 的 OOXML、表格、样式、图片和 section 审查脚本作为辅助检查。
+- 若用户明确“不用 PDF / 只要 Word”，不得使用 `render_docx.py --emit_pdf`，也不得生成 PDF 作为页数检查。
+- 若用户允许视觉检查，可用 `render_docx.py` 只输出 PNG 页面图进行内部 QA；最终仍只交付 DOCX，并在报告中记录 PNG 渲染检查结果。
+- 若当前会话没有直接暴露 `documents.*` 编辑工具，则使用本 skill 的脚本和 OOXML 检查实现同等审查，不声称调用了不可用的插件 API。
 
 ## 公式检查
 

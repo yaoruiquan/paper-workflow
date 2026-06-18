@@ -68,6 +68,8 @@ python3 scripts/check_seed_stability.py "<csv_path>" --group-col experiment --me
 python3 scripts/summarize_results.py "<project_dir>/experiment/results"
 python3 scripts/sign_test.py "<csv_path>" --baseline-col baseline --method-col method --lower-is-better --output "<report.md>"
 python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
+python3 scripts/check_acm_docx.py "<paper.docx>" --output "<acm-format-audit.md>"
+python3 scripts/check_acm_docx.py "<paper.docx>" --require-page-break-before-heading "INTRODUCTION" --output "<acm-format-audit.md>"
 ```
 
 ## 最短执行骨架
@@ -83,6 +85,8 @@ python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
 9. 如果用户要求 Word、会议模板、双栏排版、公式/图表格式或中英文稿，读取 `references/word-format-protocol.md` 后再生成产物。
 10. Stage 6 排版默认以投稿事实源为准：若用户要求 Word 或会议只提供 Word 模板，DOCX 是主产物路径；LaTeX 只能作为公式、BibTeX、参考文献、备用 `.tex` 模板或 PDF/LaTeX 投稿要求下的辅助/分支路径，不得替代 DOCX 模板审查。
 11. 若用户明确说“不用 PDF”“不要 PDF”“只要 Word”或类似要求，Stage 6 禁止生成 PDF，包括临时 PDF、渲染检查 PDF 和页数检查 PDF；只做 DOCX 结构审查，并在报告中把页数/分页标记为需 Word/WPS 人工确认。
+12. ACM Word 模板类产物必须使用“复制模板/锚点替换/最小编辑”路线，不得清空模板后凭记忆重建前置区；生成后必须运行 `scripts/check_acm_docx.py`，检查作者区、CCS、Keywords、三线表、跨页重复表头、正文上标引用、参考文献覆盖和模板假内容残留。
+13. Word-only 页数压缩按“源稿词数预算 -> 版本化短稿 -> DOCX/XML 结构审查 -> 用户用 Word/WPS 确认页数”执行；不要用 LibreOffice/UNO 或 PDF 渲染结果替代 Word/WPS 页数事实源。
 
 ## 阶段规则
 
@@ -113,6 +117,7 @@ python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
 - `scripts/summarize_results.py`：把 CSV/JSON 实验结果汇总成 Markdown 表格。
 - `scripts/sign_test.py`：对 baseline 和 method 列执行配对 sign test。
 - `scripts/audit_docx_format.py`：检查 Word 文档分栏、图表、表格、公式 OMML 结构和线性公式占位符。
+- `scripts/check_acm_docx.py`：检查 ACM Word 模板专项格式，包括作者占位、CCS/Keywords、三线表、跨页重复表头、指定标题前分页符、正文引用上标、参考文献数量和引用覆盖。
 
 ## 事实源规则
 

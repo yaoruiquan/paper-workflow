@@ -7,8 +7,7 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-
-SKILL_ROOT = Path(__file__).resolve().parents[1]
+from common import SKILL_ROOT, resolve_project_dir, workflow_root
 
 STAGES = [
     (1, "topic", "选题"),
@@ -35,14 +34,20 @@ def write_once(path: Path, text: str, force: bool = False) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def env_text(args: argparse.Namespace) -> str:
-    return "\n".join(
+def env_text(args: argparse.Namespace, root: Path) -> str:
+    lines = [
+        f"PAPER_PROJECT_DIR={root}",
+        f"PAPER_TITLE={args.title or ''}",
+        f"TARGET_VENUE={args.target_venue or ''}",
+        f"PAGE_LIMIT={args.pages or ''}",
+        f"FIELD={args.field or ''}",
+        f"PAPER_PROFILE={args.profile}",
+    ]
+    configured_root = workflow_root()
+    if configured_root is not None:
+        lines.append(f"PAPER_WORKFLOW_ROOT={configured_root}")
+    lines.extend(
         [
-            f"PAPER_TITLE={args.title or ''}",
-            f"TARGET_VENUE={args.target_venue or ''}",
-            f"PAGE_LIMIT={args.pages or ''}",
-            f"FIELD={args.field or ''}",
-            f"PAPER_PROFILE={args.profile}",
             "CURRENT_STAGE=1",
             "CURRENT_STAGE_NAME=选题",
             "AUTHOR_MODE=single",
@@ -50,6 +55,7 @@ def env_text(args: argparse.Namespace) -> str:
             "",
         ]
     )
+    return "\n".join(lines)
 
 
 def paper_md(args: argparse.Namespace) -> str:
@@ -109,9 +115,9 @@ def create_stage(root: Path, stage_num: int, slug: str, display: str, force: boo
 
 
 def init_project(args: argparse.Namespace) -> Path:
-    root = Path(args.project_dir).expanduser().resolve()
+    root = resolve_project_dir(args.project_dir)
     root.mkdir(parents=True, exist_ok=True)
-    write_once(root / ".paper-workflow.env", env_text(args), force=args.force)
+    write_once(root / ".paper-workflow.env", env_text(args, root), force=args.force)
     write_once(root / "PAPER.md", paper_md(args), force=args.force)
     write_once(root / "bibliography" / "references.bib", "% 在这里添加 BibTeX 参考文献。\n", force=args.force)
 
@@ -141,7 +147,7 @@ def init_project(args: argparse.Namespace) -> Path:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="初始化论文工作流项目")
-    parser.add_argument("project_dir")
+    parser.add_argument("project_dir", help="论文项目目录。相对路径会解析到 PAPER_WORKFLOW_ROOT 下。")
     parser.add_argument("--title", default="")
     parser.add_argument("--target-venue", default="")
     parser.add_argument("--pages", type=int, default=0)

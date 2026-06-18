@@ -37,25 +37,27 @@ description: 管理论文从选题、文献调研、实验设计、实验运行�
 初始化论文项目：
 
 ```bash
-python3 scripts/init_paper.py "<project_dir>" --title "<论文标题>" --target-venue "<会议或期刊>" --pages 8 --profile simulation
+python3 scripts/init_paper.py "<project_dir-or-paper-name>" --title "<论文标题>" --target-venue "<会议或期刊>" --pages 8 --profile simulation
 ```
+
+如果 skill 目录 `.env` 中设置了 `PAPER_WORKFLOW_ROOT`，`project_dir` 传相对路径或论文名时，会自动创建到该总目录下；绝对路径仍按原路径创建。
 
 查看当前状态：
 
 ```bash
-python3 scripts/status.py "<project_dir>"
+python3 scripts/status.py "<project_dir-or-paper-name>"
 ```
 
 执行阶段 Gate 自检：
 
 ```bash
-python3 scripts/gate_check.py "<project_dir>" --stage 3
+python3 scripts/gate_check.py "<project_dir-or-paper-name>" --stage 3
 ```
 
 创建回退记录：
 
 ```bash
-python3 scripts/rollback.py "<project_dir>" --from-stage 6 --to-stage 3 --reason "<回退原因>"
+python3 scripts/rollback.py "<project_dir-or-paper-name>" --from-stage 6 --to-stage 3 --reason "<回退原因>"
 ```
 
 检查实验数据：
@@ -79,6 +81,8 @@ python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
 7. 审查时，每一遍审查都必须写入 `stage/6-review/artifacts/review-*/report.md`。
 8. 如果后续阶段发现实验缺口、故事线弱或 claim 无证据支撑，先创建 rollback 记录，再继续处理。
 9. 如果用户要求 Word、会议模板、双栏排版、公式/图表格式或中英文稿，读取 `references/word-format-protocol.md` 后再生成产物。
+10. Stage 6 排版默认以投稿事实源为准：若用户要求 Word 或会议只提供 Word 模板，DOCX 是主产物路径；LaTeX 只能作为公式、BibTeX、参考文献、备用 `.tex` 模板或 PDF/LaTeX 投稿要求下的辅助/分支路径，不得替代 DOCX 模板审查。
+11. 若用户明确说“不用 PDF”“不要 PDF”“只要 Word”或类似要求，Stage 6 禁止生成 PDF，包括临时 PDF、渲染检查 PDF 和页数检查 PDF；只做 DOCX 结构审查，并在报告中把页数/分页标记为需 Word/WPS 人工确认。
 
 ## 阶段规则
 
@@ -87,7 +91,7 @@ python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
 3. Stage 3 跑实验必须记录原始输出、处理后汇总、图表文件、seed/config/commit 元数据和异常说明；根据 `PAPER_PROFILE` 执行统计检验、仿真约束验证或来源质量检查。
 4. Stage 4 大纲必须包含页数预算、每节字数预算、格式假设、章节-实验映射和图/表/公式/结果来源计划。
 5. Stage 5 写作必须按版本迭代：`v1` 填满结构，`v2` 统一术语和图表，`v3` 提升可读性，`v4+` 解决审稿人视角问题。
-6. Stage 6 审查必须按顺序执行：第一遍格式，第二遍逻辑和实验完整性，第三遍语言。每一遍都必须留下 `.md` 审查报告。
+6. Stage 6 审查必须按顺序执行：第一遍格式，第二遍逻辑和实验完整性，第三遍语言。每一遍都必须留下 `.md` 审查报告。若最终要求是 Word，Stage 6 必须输出并审查 DOCX；只有会议明确要求 LaTeX/PDF，或用户要求生成备用 LaTeX 稿时，才进入 LaTeX 编译分支。Word-only 场景下不做 PDF 生成或 PDF 渲染检查。
 
 ## 审查原则
 
@@ -96,7 +100,7 @@ python3 scripts/audit_docx_format.py "<paper.docx>" --output "<format-audit.md>"
 - 第二遍逻辑审查必须检查 claim-evidence 闭环、实验完整性、baseline、消融、局限性和结论是否有数据支撑。
 - 第三遍语言审查不能掩盖逻辑或数据问题；如果逻辑被阻塞，先 rollback，不要直接润色。
 - 每次格式或实验修复都必须生成版本化产物，并写入对应 `.md` 记录，说明修复项、验证命令、通过项和剩余风险。
-- 不能因为“文档已生成”就宣称完成；必须至少完成结构检查、实验检查或渲染级检查中的相应最小验证。
+- 不能因为“文档已生成”就宣称完成；必须至少完成结构检查、实验检查或渲染级检查中的相应最小验证。若用户要求不生成 PDF，则以 DOCX 结构检查作为格式最小验证，不能额外导出 PDF 作为渲染检查。
 
 ## 脚本职责
 

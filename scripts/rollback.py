@@ -7,6 +7,8 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+from common import resolve_project_dir
+
 
 STAGE_NAMES = {
     1: "选题",
@@ -44,7 +46,7 @@ def update_env(root: Path, target_stage: int) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="写入回退记录")
-    parser.add_argument("project_dir")
+    parser.add_argument("project_dir", help="论文项目目录。相对路径会解析到 PAPER_WORKFLOW_ROOT 下。")
     parser.add_argument("--from-stage", type=int, required=True, choices=range(1, 7))
     parser.add_argument("--to-stage", type=int, required=True, choices=range(1, 7))
     parser.add_argument("--reason", required=True)
@@ -54,7 +56,7 @@ def main() -> int:
     args = parser.parse_args()
     if args.to_stage >= args.from_stage:
         raise SystemExit("--to-stage 必须早于 --from-stage")
-    root = Path(args.project_dir).expanduser().resolve()
+    root = resolve_project_dir(args.project_dir)
     rollback_dir = root / "stage" / "rollback"
     rollback_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")

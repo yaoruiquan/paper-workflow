@@ -7,6 +7,8 @@ import argparse
 import re
 from pathlib import Path
 
+from common import read_key_value_file, resolve_project_dir
+
 
 STAGES = [
     (1, "topic"),
@@ -19,16 +21,7 @@ STAGES = [
 
 
 def read_env(root: Path) -> dict[str, str]:
-    env_path = root / ".paper-workflow.env"
-    data: dict[str, str] = {}
-    if not env_path.exists():
-        return data
-    for line in env_path.read_text(encoding="utf-8").splitlines():
-        if "=" not in line or line.strip().startswith("#"):
-            continue
-        key, value = line.split("=", 1)
-        data[key.strip()] = value.strip()
-    return data
+    return read_key_value_file(root / ".paper-workflow.env")
 
 
 def gate_status(stage_dir: Path) -> str:
@@ -42,9 +35,9 @@ def gate_status(stage_dir: Path) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="打印论文工作流状态")
-    parser.add_argument("project_dir")
+    parser.add_argument("project_dir", help="论文项目目录。相对路径会解析到 PAPER_WORKFLOW_ROOT 下。")
     args = parser.parse_args()
-    root = Path(args.project_dir).expanduser().resolve()
+    root = resolve_project_dir(args.project_dir)
     env = read_env(root)
     print(f"项目: {root}")
     print(f"标题: {env.get('PAPER_TITLE', '') or '待填写'}")

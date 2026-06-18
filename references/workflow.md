@@ -24,8 +24,38 @@
 
 ## 推荐项目结构
 
+如果配置了 `PAPER_WORKFLOW_ROOT`，每篇论文作为该总目录下的一个独立项目目录，目录内部使用固定结构：
+
 ```text
-project/
+PAPER_WORKFLOW_ROOT/
+└── paper-name/
+    ├── .paper-workflow.env
+    ├── PAPER.md
+    ├── bibliography/
+    │   └── references.bib
+    ├── experiment/
+    │   ├── configs/
+    │   ├── data/
+    │   ├── src/
+    │   ├── scripts/
+    │   ├── results/
+    │   │   ├── raw/
+    │   │   └── processed/
+    │   ├── figures/
+    │   └── logs/
+    └── stage/
+        ├── 1-topic/
+        ├── 2-experiment-design/
+        ├── 3-experiment-run/
+        ├── 4-outline/
+        ├── 5-writing/
+        └── 6-review/
+```
+
+单篇论文项目内部结构：
+
+```text
+paper-name/
 ├── .paper-workflow.env
 ├── PAPER.md
 ├── bibliography/

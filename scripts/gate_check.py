@@ -7,6 +7,8 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+from common import read_key_value_file, resolve_project_dir
+
 
 STAGE_SLUGS = {
     1: "topic",
@@ -87,16 +89,7 @@ PROFILE_REQUIRED = {
 
 
 def read_env(root: Path) -> dict[str, str]:
-    env_path = root / ".paper-workflow.env"
-    data: dict[str, str] = {}
-    if not env_path.exists():
-        return data
-    for line in env_path.read_text(encoding="utf-8", errors="ignore").splitlines():
-        if "=" not in line or line.strip().startswith("#"):
-            continue
-        key, value = line.split("=", 1)
-        data[key.strip()] = value.strip()
-    return data
+    return read_key_value_file(root / ".paper-workflow.env")
 
 
 def requirements_for(root: Path, stage: int) -> list[str]:
@@ -148,11 +141,11 @@ def report_text(stage: int, status: str, rows: list[tuple[str, bool]]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="检查阶段关卡")
-    parser.add_argument("project_dir")
+    parser.add_argument("project_dir", help="论文项目目录。相对路径会解析到 PAPER_WORKFLOW_ROOT 下。")
     parser.add_argument("--stage", type=int, required=True, choices=sorted(STAGE_SLUGS))
     parser.add_argument("--no-write", action="store_true")
     args = parser.parse_args()
-    root = Path(args.project_dir).expanduser().resolve()
+    root = resolve_project_dir(args.project_dir)
     status, rows = check_stage(root, args.stage)
     text = report_text(args.stage, status, rows)
     if not args.no_write:
